@@ -1,24 +1,44 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
-import { BurgerConstructorUI } from '@ui';
+import { FC, useEffect, useMemo } from 'react';
+import { TConstructorIngredient } from '../../utils/types';
+import { BurgerConstructorUI } from '../ui';
+import { RootState, useSelector, useDispatch } from '../../services/store';
+import { getIngredients } from '../../services/slices/ingredients-slice';
+import { Preloader } from '@ui';
+import { createOrderThunk, setOrderModalData } from '../../services/slices/order-slice';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  const dispatch = useDispatch();
 
-  const orderRequest = false;
+  const constructorItems = useSelector(
+    (state: RootState) => state.burgerConstructor
+  );
+  const orderRequest = useSelector(
+    (state: RootState) => state.order.orderRequest
+  );
+  const orderModalData = useSelector(
+    (state: RootState) => state.order.orderModalData
+  );
+  const ingredients = useSelector((state) => state.ingredients);
 
-  const orderModalData = null;
+  useEffect(() => {
+    if (!ingredients.ingredients.length) {
+      dispatch(getIngredients());
+    }
+  }, [dispatch, ingredients.ingredients.length]);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+
+    const bunId = constructorItems.bun._id;
+    const ingredientsIds = constructorItems.ingredients.map((item) => item._id);
+    const orderData = [bunId, ...ingredientsIds, bunId]; // булка дважды
+
+    dispatch(createOrderThunk(orderData));
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModal = () => {
+    dispatch(setOrderModalData(null));
+  };
 
   const price = useMemo(
     () =>
@@ -30,7 +50,8 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
-  return null;
+  if (ingredients.ingredientsRequest) return <Preloader />;
+  if (ingredients.IngredientsError) return <p>Ошибка загрузки ингредиентов</p>;
 
   return (
     <BurgerConstructorUI
