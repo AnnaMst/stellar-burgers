@@ -1,4 +1,4 @@
-import { RootState, useSelector } from '../../services/store';
+import { useSelector } from '../../services/store';
 
 import styles from './constructor-page.module.css';
 
@@ -6,12 +6,11 @@ import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
 import { FC } from 'react';
+import { selectIngredientsRequest } from '../../services/selectors/ingredients-selector';
 
 export const ConstructorPage: FC = () => {
   /** TODO: взять переменную из стора */
-  const isIngredientsLoading = useSelector(
-    (state: RootState) => state.ingredients.ingredientsRequest
-  );
+  const isIngredientsLoading = useSelector(selectIngredientsRequest);
 
   return (
     <>

@@ -10,12 +10,17 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { constructorReducer } from './slices/constructor-slice';
 import { orderSlice } from './slices/order-slice';
 import { ingredientsSlice } from './slices/ingredients-slice';
+import { authSlice } from './slices/auth-slice';
+import { userSlice } from './slices/user-Slice';
+import feedSlice from './slices/feed-slice';
 
 export const rootReducer = combineReducers({
   burgerConstructor: constructorReducer,
   order: orderSlice.reducer,
-  ingredients: ingredientsSlice.reducer
-  // добавляй сюда другие редюсеры
+  ingredients: ingredientsSlice.reducer,
+  auth: authSlice.reducer,
+  user: userSlice.reducer,
+  feed: feedSlice,
 });
 
 const store = configureStore({

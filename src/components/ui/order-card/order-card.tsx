@@ -12,6 +12,7 @@ import { OrderStatus } from '@components';
 
 export const OrderCardUI: FC<OrderCardUIProps> = memo(
   ({ orderInfo, maxIngredients, locationState }) => (
+    
     <Link
       to={orderInfo.number.toString()}
       relative='path'

@@ -1,11 +1,15 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { RootState, useSelector } from '../../services/store';
+import { RootState, useSelector, useDispatch } from '../../services/store';
+import { getOrderByNumberThunk } from '../../services/slices/order-slice';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
+  const { number } = useParams<{ number: string }>();
+  const dispatch = useDispatch();
+
   const orderData = useSelector(
     (state: RootState) => state.order.orderModalData
   );
@@ -13,37 +17,32 @@ export const OrderInfo: FC = () => {
     (state: RootState) => state.ingredients.ingredients
   );
 
-  /* Готовим данные для отображения */
+  // 🔹 Загружаем заказ, если его нет в сторе
+  useEffect(() => {
+    if (!orderData && number) {
+      dispatch(getOrderByNumberThunk(Number(number)));
+    }
+  }, [dispatch, number, orderData]);
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
     const date = new Date(orderData.createdAt);
 
-    type TIngredientsWithCount = {
-      [key: string]: TIngredient & { count: number };
-    };
-
-    const ingredientsInfo = orderData.ingredients.reduce(
-      (acc: TIngredientsWithCount, item) => {
+    const ingredientsInfo = orderData.ingredients.reduce((acc, item) => {
+      const ingredient = ingredients.find((ing) => ing._id === item);
+      if (ingredient) {
         if (!acc[item]) {
-          const ingredient = ingredients.find((ing: { _id: string; }) => ing._id === item);
-          if (ingredient) {
-            acc[item] = {
-              ...ingredient,
-              count: 1
-            };
-          }
+          acc[item] = { ...ingredient, count: 1 };
         } else {
           acc[item].count++;
         }
-
-        return acc;
-      },
-      {}
-    );
+      }
+      return acc;
+    }, {} as Record<string, TIngredient & { count: number }>);
 
     const total = Object.values(ingredientsInfo).reduce(
-      (acc, item) => acc + item.price * item.count,
+      (sum, item) => sum + item.price * item.count,
       0
     );
 
