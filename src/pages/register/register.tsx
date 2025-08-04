@@ -3,6 +3,7 @@ import { RegisterUI } from '@ui-pages';
 
 import { RootState, useDispatch, useSelector } from '../../services/store';
 import { registerUser } from '../../services/slices/user-Slice';
+import { selectRegisterUserError } from '../../services/selectors/user-selector';
 
 export const Register: FC = () => {
   const [userName, setUserName] = useState('');
@@ -10,9 +11,7 @@ export const Register: FC = () => {
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
-  const registerUserError = useSelector(
-    (state: RootState) => state.user.registerUserError
-  );
+  const registerUserError = useSelector(selectRegisterUserError);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

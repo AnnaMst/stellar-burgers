@@ -1,6 +1,9 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
-import { selectUser, selectIsAuthChecked } from '../../services/selectors/auth-selector';
+import {
+  selectCurrentUser,
+  selectIsAuthChecked
+} from '../../services/selectors/user-selector';
 import { Preloader } from '@ui';
 
 type ProtectedRouteProps = {
@@ -8,9 +11,12 @@ type ProtectedRouteProps = {
   children: React.ReactElement;
 };
 
-export const ProtectedRoute = ({ onlyUnAuth, children }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({
+  onlyUnAuth,
+  children
+}: ProtectedRouteProps) => {
   const location = useLocation();
-  const user = useSelector(selectUser);
+  const user = useSelector(selectCurrentUser);
   const isAuthChecked = useSelector(selectIsAuthChecked);
 
   if (!isAuthChecked) {

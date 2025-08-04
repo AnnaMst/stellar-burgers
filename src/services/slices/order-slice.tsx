@@ -8,7 +8,7 @@ type TOrderState = {
   orderModalData: TOrder | null;
   orderError: string | null;
   ordersHistoryRequest: boolean;
-  ordersHistory: TOrder[]
+  ordersHistory: TOrder[];
 };
 
 const initialState: TOrderState = {
@@ -18,7 +18,6 @@ const initialState: TOrderState = {
   orderError: null,
   ordersHistoryRequest: false,
   ordersHistory: []
-
 };
 
 export const createOrderThunk = createAsyncThunk<TOrder, string[]>(
@@ -52,11 +51,12 @@ export const getUserOrdersThunk = createAsyncThunk<TOrder[], void>(
       const response = await getOrdersApi();
       return response;
     } catch (error: any) {
-      return rejectWithValue(error.message || 'Ошибка получения истории заказов');
+      return rejectWithValue(
+        error.message || 'Ошибка получения истории заказов'
+      );
     }
   }
 );
-
 
 export const orderSlice = createSlice({
   name: 'order',
@@ -117,7 +117,9 @@ export const orderSlice = createSlice({
         state.ordersHistoryRequest = true;
         state.orderError = null;
       })
-      .addCase(getUserOrdersThunk.fulfilled, (state, action: PayloadAction<TOrder[]>) => {
+      .addCase(
+        getUserOrdersThunk.fulfilled,
+        (state, action: PayloadAction<TOrder[]>) => {
           state.ordersHistoryRequest = false;
           state.ordersHistory = action.payload;
         }
@@ -126,7 +128,6 @@ export const orderSlice = createSlice({
         state.orderRequest = false;
         state.orderError = action.payload as string;
       });
-
   }
 });
 
@@ -134,7 +135,7 @@ export const {
   setOrders,
   setOrderRequest,
   setOrderModalData,
-  clearOrderModalData,
+  clearOrderModalData
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

@@ -4,7 +4,7 @@ import { ProfileMenuUI } from '@ui';
 import { logoutApi } from '../../utils/burger-api';
 import { deleteCookie } from '../../utils/cookie';
 import { useDispatch } from '../../services/store';
-import { logout } from '../../services/slices/auth-slice';
+import { logoutUser } from '../../services/slices/user-Slice';
 
 export const ProfileMenu: FC = () => {
   const { pathname } = useLocation();
@@ -12,15 +12,10 @@ export const ProfileMenu: FC = () => {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    try {
-      await logoutApi();
-    } catch (error) {
-      console.error('Ошибка при выходе из системы', error);
-    } finally {
-      deleteCookie('accessToken');
-      localStorage.removeItem('refreshToken');
-      dispatch(logout());
-      navigate('/login', { replace: true });
+    const resultAction = await dispatch(logoutUser());
+
+    if (logoutUser.fulfilled.match(resultAction)) {
+      navigate('/login'); // переход только после успешного выхода
     }
   };
 

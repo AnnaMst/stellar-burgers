@@ -11,7 +11,13 @@ import {
 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route, useNavigate, useLocation, useMatch } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  useMatch
+} from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
@@ -20,7 +26,6 @@ import { useEffect } from 'react';
 import { getIngredients } from '../../services/slices/ingredients-slice';
 import { checkUserAuth } from '../../services/slices/user-Slice';
 import { useDispatch } from '../../services/store';
-import { useAuthInit } from '../../services/hooks/use-auth-init';
 
 export const App = () => {
   const location = useLocation();
@@ -28,18 +33,12 @@ export const App = () => {
 
   const backgroundLocation = location.state?.background;
 
-  const profileMatch = useMatch('/profile/orders/:number')?.params.number;
-  const feedMatch = useMatch('/feed/:number')?.params.number;
-  const orderNumber = feedMatch || profileMatch;
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const onClose = () => {
+    dispatch(clearOrderModalData());
     navigate(-1);
-    clearOrderModalData();
   };
-
-  useAuthInit();
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -102,15 +101,13 @@ export const App = () => {
           }
         />
         <Route path='*' element={<NotFound404 />} />
-         <Route
+        <Route
           path='/feed/:number'
           element={
             <div className={styles.detailPageWrap}>
               <p
                 className={`text text_type_digits-default ${styles.detailHeader}`}
-              >
-                #{orderNumber && orderNumber.padStart(6, '0')}
-              </p>
+              />
               <OrderInfo />
             </div>
           }
@@ -133,9 +130,7 @@ export const App = () => {
               <div className={styles.detailPageWrap}>
                 <p
                   className={`text text_type_digits-default ${styles.detailHeader}`}
-                >
-                  #{orderNumber && orderNumber.padStart(6, '0')}
-                </p>
+                />
                 <OrderInfo />
               </div>
             </ProtectedRoute>
@@ -149,7 +144,7 @@ export const App = () => {
             <Route
               path='/feed/:number'
               element={
-                <Modal title={''} onClose={onClose}>
+                <Modal title={``} onClose={onClose}>
                   <OrderInfo />
                 </Modal>
               }
@@ -165,7 +160,7 @@ export const App = () => {
             <Route
               path='/profile/orders/:number'
               element={
-                <Modal title={''} onClose={onClose}>
+                <Modal title={``} onClose={onClose}>
                   <OrderInfo />
                 </Modal>
               }
@@ -176,5 +171,3 @@ export const App = () => {
     </div>
   );
 };
-
-

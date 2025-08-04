@@ -12,12 +12,11 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .slice(0, 20);
 
 export const FeedInfo: FC = () => {
-
   const selectOrdersData = (state: RootState) => state.feed.orders;
 
-const selectTotalOrders = (state: RootState) => state.feed.total;
+  const selectTotalOrders = (state: RootState) => state.feed.total;
 
-const selectTodayOrders = (state: RootState) => state.feed.totalToday;
+  const selectTodayOrders = (state: RootState) => state.feed.totalToday;
 
   const orders: TOrder[] = useSelector(selectOrdersData);
   const totalFeeds = useSelector(selectTotalOrders);

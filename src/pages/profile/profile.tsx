@@ -5,18 +5,17 @@ import { useDispatch, useSelector } from '../../services/store';
 import { updateUser } from '../../services/slices/user-Slice';
 
 export const Profile: FC = () => {
-  const user = useSelector(selectCurrentUser)
+  const user = useSelector(selectCurrentUser);
 
   const [formValue, setFormValue] = useState<{
-  name: string;
-  email: string;
-  password: string;
-}>({
-  name: user?.name || '',
-  email: user?.email || '',
-  password: ''
-});
-
+    name: string;
+    email: string;
+    password: string;
+  }>({
+    name: user?.name || '',
+    email: user?.email || '',
+    password: ''
+  });
 
   useEffect(() => {
     setFormValue((prevState) => ({
@@ -33,7 +32,7 @@ export const Profile: FC = () => {
 
   const dispatch = useDispatch();
 
-const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     const { name, email, password } = formValue;
     dispatch(updateUser({ name, email, password })).then(() => {
@@ -45,13 +44,12 @@ const handleSubmit = (e: SyntheticEvent) => {
     });
   };
 
-
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
       name: user?.name || '',
-  email: user?.email || '',
-  password: ''
+      email: user?.email || '',
+      password: ''
     });
   };
 

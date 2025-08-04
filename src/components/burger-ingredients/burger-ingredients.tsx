@@ -3,12 +3,11 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '../../utils/types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { RootState, useSelector } from '../../services/store';
+import { useSelector } from '../../services/store';
+import { selectIngredientsItems } from '../../services/selectors/ingredients-selector';
 
 export const BurgerIngredients: FC = () => {
-  const items = useSelector(
-    (state: RootState) => state.ingredients.ingredients
-  );
+  const items = useSelector(selectIngredientsItems);
 
   const buns = items.filter((i) => i.type === 'bun');
   const sauces = items.filter((i) => i.type === 'sauce');

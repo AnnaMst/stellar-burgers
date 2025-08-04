@@ -79,20 +79,13 @@ export const getIngredientsApi = () =>
       return Promise.reject(data);
     });
 
-export const getFeedsApi = () => {
-  return fetch(`${URL}/orders/all`)
-    .then((res) => {
-      return checkResponse<TFeedsResponse>(res);
-    })
+export const getFeedsApi = () =>
+  fetch(`${URL}/orders/all`)
+    .then((res) => checkResponse<TFeedsResponse>(res))
     .then((data) => {
       if (data?.success) return data;
       return Promise.reject(data);
-    })
-    .catch((err) => {
-      throw err;
     });
-};
-
 
 export const getOrdersApi = () =>
   fetchWithRefresh<TFeedsResponse>(`${URL}/orders`, {

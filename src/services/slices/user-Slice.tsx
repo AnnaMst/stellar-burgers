@@ -10,35 +10,41 @@ import {
 import { TUser } from '../../utils/types';
 import { getCookie, setCookie, deleteCookie } from '../../utils/cookie';
 
-export const registerUser = createAsyncThunk<TUser, TRegisterData, { rejectValue: string }>(
-  'user/registerUser',
-  async (data, thunkAPI) => {
-    try {
-      const response = await registerUserApi(data);
-      localStorage.setItem('refreshToken', response.refreshToken);
-      setCookie('accessToken', response.accessToken);
-      return response.user;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message || 'Ошибка при регистрации пользователя');
-    }
-  }
-);
+export const registerUser = createAsyncThunk<
+  TUser,
+  TRegisterData,
+  { rejectValue: string }
+>('user/registerUser', async (data, thunkAPI) => {
+  try {
+    const response = await registerUserApi(data);
+    localStorage.setItem('refreshToken', response.refreshToken);
+    setCookie('accessToken', response.accessToken);
 
-export const loginUser = createAsyncThunk<TUser, { email: string; password: string }, { rejectValue: string }>(
-  'user/loginUser',
-  async (data, thunkAPI) => {
-    try {
-      const response = await loginUserApi(data);
-      setCookie('accessToken', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
-      return response.user;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message || 'Ошибка при входе');
-    }
+    return response.user;
+  } catch (error: any) {
+    console.error('Ошибка регистрации:', error);
+    return thunkAPI.rejectWithValue(
+      error?.message || 'Ошибка при регистрации пользователя'
+    );
   }
-);
+});
 
-// Get User
+
+export const loginUser = createAsyncThunk<
+  TUser,
+  { email: string; password: string },
+  { rejectValue: string }
+>('user/loginUser', async (data, thunkAPI) => {
+  try {
+    const response = await loginUserApi(data);
+    setCookie('accessToken', response.accessToken);
+    localStorage.setItem('refreshToken', response.refreshToken);
+    return response.user;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message || 'Ошибка при входе');
+  }
+});
+
 export const getUser = createAsyncThunk<TUser, void, { rejectValue: string }>(
   'user/getUser',
   async (_, thunkAPI) => {
@@ -46,7 +52,9 @@ export const getUser = createAsyncThunk<TUser, void, { rejectValue: string }>(
       const response = await getUserApi();
       return response.user;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message || 'Ошибка получения пользователя');
+      return thunkAPI.rejectWithValue(
+        error.message || 'Ошибка получения пользователя'
+      );
     }
   }
 );
@@ -56,42 +64,51 @@ export const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
   async (_, thunkAPI) => {
     try {
       await logoutApi();
-      deleteCookie('accessToken');
-            localStorage.removeItem('refreshToken');
 
+      deleteCookie('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      return;
     } catch (error: any) {
+      console.error('Ошибка выхода', error);
       return thunkAPI.rejectWithValue('Ошибка выхода');
     }
   }
 );
 
-export const checkUserAuth = createAsyncThunk<void, void, { rejectValue: string }>(
-  'user/checkUserAuth',
-  async (_, { dispatch }) => {
-    const accessToken = getCookie('accessToken');
 
-    if (!accessToken) {
-      dispatch(setUser(null));
-      dispatch(authChecked());
-      return;
-    }
+export const checkUserAuth = createAsyncThunk<
+  void,
+  void,
+  { rejectValue: string }
+>('user/checkUserAuth', async (_, { dispatch }) => {
+  const accessToken = getCookie('accessToken');
 
-    try {
-      const response = await getUserApi();
-      dispatch(setUser(response.user));
-    } catch (error) {
-      console.error('Ошибка проверки авторизации', error);
-      dispatch(setUser(null));
-    } finally {
-      dispatch(authChecked());
-    }
+  if (!accessToken) {
+    dispatch(setUser(null));
+    dispatch(authChecked());
+    return;
   }
-);
+
+  try {
+    const response = await getUserApi();
+    dispatch(setUser(response.user));
+  } catch (error) {
+    console.error('Ошибка проверки авторизации', error);
+    dispatch(setUser(null));
+  } finally {
+    dispatch(authChecked());
+  }
+});
 
 export const updateUser = createAsyncThunk(
   'auth/updateUser',
   async (
-    { name, email, password }: { name: string; email: string; password?: string },
+    {
+      name,
+      email,
+      password
+    }: { name: string; email: string; password?: string },
     thunkAPI
   ) => {
     try {
@@ -102,7 +119,6 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
-
 
 type TUserState = {
   user: TUser | null;
@@ -128,7 +144,7 @@ export const userSlice = createSlice({
     },
     authChecked(state) {
       state.isAuthChecked = true;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder

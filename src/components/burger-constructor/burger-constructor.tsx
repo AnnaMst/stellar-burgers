@@ -1,32 +1,34 @@
 import { FC, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { TConstructorIngredient } from '../../utils/types';
-import { BurgerConstructorUI } from '../ui';
-import { RootState, useSelector, useDispatch } from '../../services/store';
-import { getIngredients } from '../../services/slices/ingredients-slice';
-import { Preloader } from '@ui';
+import { useSelector, useDispatch } from '../../services/store';
+import { BurgerConstructorUI, Preloader } from '@ui';
 import {
   createOrderThunk,
   setOrderModalData
 } from '../../services/slices/order-slice';
-import { useNavigate } from 'react-router-dom';
 import { clearConstructor } from '../../services/slices/constructor-slice';
+import { getIngredients } from '../../services/slices/ingredients-slice';
+
+import {
+  selectOrderModalData,
+  selectOrderRequest
+} from '../../services/selectors/order-selector';
+import { selectConstructorItems } from '../../services/selectors/constructor-selector';
+import { selectIngredients } from '../../services/selectors/ingredients-selector';
+import { selectCurrentUser } from '../../services/selectors/user-selector';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const constructorItems = useSelector(
-    (state: RootState) => state.burgerConstructor
-  );
-  const orderRequest = useSelector(
-    (state: RootState) => state.order.orderRequest
-  );
-  const orderModalData = useSelector(
-    (state: RootState) => state.order.orderModalData
-  );
-  const ingredients = useSelector((state) => state.ingredients);
+  const constructorItems = useSelector(selectConstructorItems);
+  const orderRequest = useSelector(selectOrderRequest);
+  const orderModalData = useSelector(selectOrderModalData);
+  const ingredients = useSelector(selectIngredients);
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
     if (!ingredients.ingredients.length) {

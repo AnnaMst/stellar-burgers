@@ -15,7 +15,7 @@ const initialState: TFeedState = {
   total: 0,
   totalToday: 0,
   feedRequest: false,
-  feedError: null,
+  feedError: null
 };
 
 export const fetchFeed = createAsyncThunk(
