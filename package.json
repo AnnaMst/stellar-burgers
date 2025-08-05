@@ -21,7 +21,7 @@
     "react-router-dom": "^6.10.0",
     "redux-thunk": "^3.1.0",
     "typescript": "^5.3.3",
-    "uuid": "^9.0.0",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
@@ -97,5 +97,9 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "description": "[Макет](<https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design>)",
+  "main": "webpack.config.js",
+  "author": "",
+  "license": "ISC"
 }
