@@ -24,12 +24,14 @@ export const ProtectedRoute = ({
   }
 
   if (onlyUnAuth && user) {
+    // Если роут только для неавторизованных и пользователь авторизован
     const from = location.state?.from || { pathname: '/' };
     return <Navigate to={from} replace />;
   }
 
   if (!onlyUnAuth && !user) {
-    return <Navigate to='/register' state={{ from: location }} replace />;
+    // Если роут защищенный и пользователь не авторизован
+    return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
   return children;

@@ -50,9 +50,14 @@ export const BurgerConstructor: FC = () => {
     dispatch(createOrderThunk(orderData));
   };
 
+  useEffect(() => {
+    if (orderModalData) {
+      dispatch(clearConstructor());
+    }
+  }, [orderModalData, dispatch]);
+
   const closeOrderModal = () => {
     dispatch(setOrderModalData(null));
-    dispatch(clearConstructor());
   };
 
   const price = useMemo(

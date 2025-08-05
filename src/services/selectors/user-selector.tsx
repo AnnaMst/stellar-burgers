@@ -6,7 +6,7 @@ export const selectRegisterUserError = (state: RootState) =>
 export const selectCurrentUser = (state: RootState) => state.user.user;
 export const selectAuthChecked = (state: RootState) => state.user.isAuthChecked;
 export const selectAuthLoading = (state: RootState) => state.user.isLoading;
-export const selectAuthError = (state: RootState) => state.user.registerUserError;
+export const selectAuthError = (state: RootState) =>
+  state.user.registerUserError;
 export const selectIsAuthChecked = (state: RootState) =>
   state.user.isAuthChecked;
-

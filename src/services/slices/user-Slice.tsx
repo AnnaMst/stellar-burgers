@@ -29,7 +29,6 @@ export const registerUser = createAsyncThunk<
   }
 });
 
-
 export const loginUser = createAsyncThunk<
   TUser,
   { email: string; password: string },
@@ -75,7 +74,6 @@ export const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
     }
   }
 );
-
 
 export const checkUserAuth = createAsyncThunk<
   void,

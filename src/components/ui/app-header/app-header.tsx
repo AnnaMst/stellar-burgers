@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styles from './app-header.module.css';
 import { TAppHeaderUIProps } from './type';
 import {
@@ -21,7 +21,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
           }
         >
           {({ isActive }) => (
-            <div className={styles.link_inner}>
+            <>
               <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
               <p
                 className={clsx(
@@ -31,7 +31,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
               >
                 Конструктор
               </p>
-            </div>
+            </>
           )}
         </NavLink>
 
@@ -42,7 +42,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
           }
         >
           {({ isActive }) => (
-            <div className={styles.link_inner}>
+            <>
               <ListIcon type={isActive ? 'primary' : 'secondary'} />
               <p
                 className={clsx(
@@ -52,7 +52,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
               >
                 Лента заказов
               </p>
-            </div>
+            </>
           )}
         </NavLink>
       </div>
@@ -71,7 +71,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
           }
         >
           {({ isActive }) => (
-            <div className={styles.link_inner}>
+            <>
               <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
               <p
                 className={clsx(
@@ -81,7 +81,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
               >
                 {userName || 'Личный кабинет'}
               </p>
-            </div>
+            </>
           )}
         </NavLink>
       </div>
