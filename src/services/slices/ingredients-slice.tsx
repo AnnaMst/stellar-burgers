@@ -29,10 +29,9 @@ export const ingredientsSlice = createSlice({
         state.ingredientsRequest = true;
         state.IngredientsError = null;
       })
-      .addCase(getIngredients.rejected, (state, action) => {
+      .addCase(getIngredients.rejected, (state) => {
         state.ingredientsRequest = false;
-        state.IngredientsError =
-          action.error.message || 'Ошибка загрузки ингредиентов';
+        state.IngredientsError = 'Ошибка загрузки ингредиентов';
       })
       .addCase(
         getIngredients.fulfilled,
