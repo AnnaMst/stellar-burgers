@@ -187,7 +187,6 @@ export const userSlice = createSlice({
       // Logout
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
-        state.isLoading = false;
         state.logoutUserError = undefined;
       })
       .addCase(logoutUser.rejected, (state, action) => {

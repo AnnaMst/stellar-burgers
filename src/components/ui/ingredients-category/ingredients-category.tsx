@@ -6,10 +6,8 @@ import { BurgerIngredient } from '@components';
 export const IngredientsCategoryUI = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryUIProps
->(({ title, titleRef, ingredients, ingredientsCounters, ...props }, ref) => (
-  <div {...props}>
-    {' '}
-    {/* ← Оберните в div с props */}
+>(({ title, titleRef, ingredients, ingredientsCounters }, ref) => (
+  <>
     <h3 className='text text_type_main-medium mt-10 mb-6' ref={titleRef}>
       {title}
     </h3>
@@ -22,5 +20,5 @@ export const IngredientsCategoryUI = forwardRef<
         />
       ))}
     </ul>
-  </div>
+  </>
 ));
