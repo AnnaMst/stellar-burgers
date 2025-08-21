@@ -22,30 +22,28 @@ describe('constructorSlice integration tests', () => {
     image_mobile: 'img_mobile.png'
   };
 
-  beforeEach(() => {
-    store.dispatch(clearConstructor());
-  });
+  beforeEach(() => store.dispatch(clearConstructor()));
 
   it('should set bun', () => {
-    store.dispatch(setBun({ ...baseIngredient, type: 'bun', id: 'bun1' }));
-    expect(store.getState().burgerConstructor.bun?.name).toBe('Test Ingredient');
+    const bun = { ...baseIngredient, type: 'bun', id: 'bun1' };
+    store.dispatch(setBun(bun));
+    expect(store.getState().burgerConstructor.bun?.name).toBe(bun.name);
   });
 
-  it('should add ingredient', () => {
+  it('should add and remove ingredient', () => {
     store.dispatch(addIngredient(baseIngredient));
-    expect(store.getState().burgerConstructor.ingredients.length).toBe(1);
-  });
+    expect(store.getState().burgerConstructor.ingredients).toHaveLength(1);
 
-  it('should remove ingredient', () => {
-    store.dispatch(addIngredient(baseIngredient));
     const id = store.getState().burgerConstructor.ingredients[0].id;
     store.dispatch(removeIngredient(id));
     expect(store.getState().burgerConstructor.ingredients).toHaveLength(0);
   });
 
-  it('should move ingredient', () => {
-    store.dispatch(addIngredient({ ...baseIngredient, _id: '2', name: 'First' }));
-    store.dispatch(addIngredient({ ...baseIngredient, _id: '3', name: 'Second' }));
+  it('should move ingredients', () => {
+    const first = { ...baseIngredient, _id: '2', name: 'First' };
+    const second = { ...baseIngredient, _id: '3', name: 'Second' };
+    store.dispatch(addIngredient(first));
+    store.dispatch(addIngredient(second));
 
     store.dispatch(moveIngredient({ fromIndex: 0, toIndex: 1 }));
 

@@ -19,15 +19,11 @@ describe('ingredientsSlice integration tests', () => {
     image_mobile: 'img_mobile.png'
   };
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+  beforeEach(() => jest.clearAllMocks());
 
   it('should load ingredients successfully', async () => {
     (api.getIngredientsApi as jest.Mock).mockResolvedValue([mockIngredient]);
-
     await store.dispatch(getIngredients());
-
     const state = store.getState().ingredients;
     expect(state.ingredients).toEqual([mockIngredient]);
     expect(state.ingredientsRequest).toBe(false);
@@ -36,9 +32,7 @@ describe('ingredientsSlice integration tests', () => {
 
   it('should handle error when loading ingredients', async () => {
     (api.getIngredientsApi as jest.Mock).mockRejectedValue(new Error('Ошибка'));
-
     await store.dispatch(getIngredients());
-
     const state = store.getState().ingredients;
     expect(state.ingredientsRequest).toBe(false);
     expect(state.IngredientsError).toBe('Ошибка загрузки ингредиентов');
