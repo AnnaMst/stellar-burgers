@@ -9,7 +9,7 @@ import { selectConstructorItems } from '../../services/selectors/constructor-sel
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
->(({ title, titleRef, ingredients }, ref) => {
+>(({ title, titleRef, ingredients, ...props }, ref) => {
   const burgerConstructor = useSelector(selectConstructorItems);
 
   const ingredientsCounters = useMemo(() => {
@@ -29,6 +29,7 @@ export const IngredientsCategory = forwardRef<
       ingredients={ingredients}
       ingredientsCounters={ingredientsCounters}
       ref={ref}
+      {...props}
     />
   );
 });
